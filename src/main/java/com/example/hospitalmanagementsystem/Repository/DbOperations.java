@@ -50,17 +50,17 @@ public class DbOperations {
 
     public String insertPatientInfo(Patient patient) throws SQLException {
         getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO " + tableName + " VALUES (NULL ,?,?,?,?)");
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO " + this.tableName + " VALUES (NULL, ?,?,?,?)");
         preparedStatement.setString(1, patient.getPatientName());
         preparedStatement.setInt(2, patient.getAllocatedRoomNo());
         preparedStatement.setString(3, patient.getAllocatedDoctorName());
         preparedStatement.setString(4, patient.getDateOfAdmit());
         int row = preparedStatement.executeUpdate();
         String str;
-        if (row > 1) {
-            str = "Info added successfully";
+        if (row < 1) {
+            str = "patient info is not inserted";
         } else {
-            str = "Info is not added successfully";
+            str = " patient info  is inserted successfully";
         }
         closeConnection();
         return str;
@@ -72,15 +72,36 @@ public class DbOperations {
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM " + tableName);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            //int id=resultSet.getInt(1);
+            int id = resultSet.getInt(1);
             String patientName = resultSet.getString(2);
             int allocatedRoomNo = resultSet.getInt(3);
             String allocatedDoctorName = resultSet.getString(4);
             String dateOfAdmit = resultSet.getString(5);
-            patients.add(new Patient(patientName, allocatedRoomNo, allocatedDoctorName, dateOfAdmit));
+            patients.add(new Patient(id, patientName, allocatedRoomNo, allocatedDoctorName, dateOfAdmit));
         }
         closeConnection();
         return patients;
+    }
+
+    public Patient searchById(int id) throws SQLException {
+        getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM " + this.tableName + " WHERE id = " + id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            int idr = resultSet.getInt(1);
+            String patientName = resultSet.getString(2);
+            int allocatedRoomNo = resultSet.getInt(3);
+            String allocatedDoctorName = resultSet.getString(4);
+            String dateOfAdmit = resultSet.getString(5);
+            Patient patient = new Patient(idr, patientName, allocatedRoomNo, allocatedDoctorName, dateOfAdmit);
+            closeConnection();
+            return patient;
+        } else {
+            System.out.println("Not found");
+            closeConnection();
+            return null;
+        }
+
     }
 }
 

@@ -32,5 +32,9 @@ public class PatientService {
     public List<Patient> getAllPatientInfo() throws SQLException {
         return dbOperations.getAllPatientInfo();
     }
+
+    public Patient searchById(int id) throws SQLException {
+        return dbOperations.searchById(id);
+    }
 }
 

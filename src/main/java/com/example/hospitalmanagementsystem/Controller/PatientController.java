@@ -10,10 +10,7 @@ package com.example.hospitalmanagementsystem.Controller;
 import com.example.hospitalmanagementsystem.Model.Patient;
 import com.example.hospitalmanagementsystem.Service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -29,13 +26,18 @@ public class PatientController {
     }
 
     @PostMapping("/insertPatientInfo")
-    public String insertPatientInfo(@PathVariable Patient patient) throws SQLException {
+    public String insertPatientInfo(@RequestBody Patient patient) throws SQLException {
         return patientService.insertPatientInfo(patient);
     }
 
     @GetMapping("/getAllPatientInfo")
     public List<Patient> getAllPatientInfo() throws SQLException {
         return patientService.getAllPatientInfo();
+    }
+
+    @GetMapping("/searchById{id}")
+    public Patient searchById(@PathVariable int id) throws SQLException {
+        return patientService.searchById(id);
     }
 }
 

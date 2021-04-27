@@ -25,5 +25,13 @@ public class Patient {
         this.allocatedDoctorName = allocatedDoctorName;
         this.dateOfAdmit = dateOfAdmit;
     }
+
+    public Patient(int id, String patientName, int allocatedRoomNo, String allocatedDoctorName, String dateOfAdmit) {
+        this.id = id;
+        this.patientName = patientName;
+        this.allocatedRoomNo = allocatedRoomNo;
+        this.allocatedDoctorName = allocatedDoctorName;
+        this.dateOfAdmit = dateOfAdmit;
+    }
 }
 
