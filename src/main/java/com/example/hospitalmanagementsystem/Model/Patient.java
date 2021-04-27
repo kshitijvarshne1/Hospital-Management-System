@@ -7,6 +7,11 @@
 
 package com.example.hospitalmanagementsystem.Model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Patient {
     private int id;
     private String patientName;
@@ -21,5 +26,6 @@ public class Patient {
         this.allocatedDoctorName = allocatedDoctorName;
         this.dateOfAdmit = dateOfAdmit;
     }
+
 }
 
