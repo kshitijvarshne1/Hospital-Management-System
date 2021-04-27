@@ -7,19 +7,20 @@
 
 package com.example.hospitalmanagementsystem.Repository;
 
+import com.example.hospitalmanagementsystem.Model.Patient;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class DbOperations {
-    private static final String URL = "jdbc:mysql://localhost:3306/patientsDB";
+    private static final String URL = "jdbc:mysql://localhost:3306/book";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "1122";
     private static Connection connection;
+    private String tableName;
 
     public void getConnection() throws SQLException {
         if (connection == null) {
@@ -35,6 +36,7 @@ public class DbOperations {
 
     public String createTable(String tableName) throws SQLException {
         getConnection();
+        this.tableName = tableName;
         Statement statement = connection.createStatement();
         boolean isOpSucc = statement.execute("CREATE TABLE " + tableName + " (id INT primary key AUTO_INCREMENT,patientName varchar(20),allocatedRoomNo INT,allocatedDoctorName VARCHAR(20),dateOfAdmit VARCHAR(20) ); ");
         String str = tableName + " is ";
@@ -44,6 +46,41 @@ public class DbOperations {
             str = str + "not created Successfully";
         }
         return str;
+    }
+
+    public String insertPatientInfo(Patient patient) throws SQLException {
+        getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO " + tableName + " VALUES (NULL ,?,?,?,?)");
+        preparedStatement.setString(1, patient.getPatientName());
+        preparedStatement.setInt(2, patient.getAllocatedRoomNo());
+        preparedStatement.setString(3, patient.getAllocatedDoctorName());
+        preparedStatement.setString(4, patient.getDateOfAdmit());
+        int row = preparedStatement.executeUpdate();
+        String str;
+        if (row > 1) {
+            str = "Info added successfully";
+        } else {
+            str = "Info is not added successfully";
+        }
+        closeConnection();
+        return str;
+    }
+
+    public List<Patient> getAllPatientInfo() throws SQLException {
+        getConnection();
+        List<Patient> patients = new ArrayList<>();
+        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM " + tableName);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            //int id=resultSet.getInt(1);
+            String patientName = resultSet.getString(2);
+            int allocatedRoomNo = resultSet.getInt(3);
+            String allocatedDoctorName = resultSet.getString(4);
+            String dateOfAdmit = resultSet.getString(5);
+            patients.add(new Patient(patientName, allocatedRoomNo, allocatedDoctorName, dateOfAdmit));
+        }
+        closeConnection();
+        return patients;
     }
 }
 

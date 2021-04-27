@@ -7,11 +7,13 @@
 
 package com.example.hospitalmanagementsystem.Service;
 
+import com.example.hospitalmanagementsystem.Model.Patient;
 import com.example.hospitalmanagementsystem.Repository.DbOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 public class PatientService {
@@ -21,6 +23,14 @@ public class PatientService {
 
     public String createTable(String tableName) throws SQLException {
         return dbOperations.createTable(tableName);
+    }
+
+    public String insertPatientInfo(Patient patient) throws SQLException {
+        return dbOperations.insertPatientInfo(patient);
+    }
+
+    public List<Patient> getAllPatientInfo() throws SQLException {
+        return dbOperations.getAllPatientInfo();
     }
 }
 

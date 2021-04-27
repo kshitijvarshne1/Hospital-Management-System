@@ -19,8 +19,7 @@ public class Patient {
     private String allocatedDoctorName;
     private String dateOfAdmit;
 
-    public Patient(int id, String patientName, int allocatedRoomNo, String allocatedDoctorName, String dateOfAdmit) {
-        this.id = id;
+    public Patient(String patientName, int allocatedRoomNo, String allocatedDoctorName, String dateOfAdmit) {
         this.patientName = patientName;
         this.allocatedRoomNo = allocatedRoomNo;
         this.allocatedDoctorName = allocatedDoctorName;
