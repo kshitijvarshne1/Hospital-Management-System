@@ -26,6 +26,5 @@ public class Patient {
         this.allocatedDoctorName = allocatedDoctorName;
         this.dateOfAdmit = dateOfAdmit;
     }
-
 }
 
