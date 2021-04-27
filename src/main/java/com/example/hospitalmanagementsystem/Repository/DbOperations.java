@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 @Repository
 public class DbOperations {
@@ -20,11 +21,10 @@ public class DbOperations {
     private static final String PASSWORD = "1122";
     private static Connection connection;
 
-    public Connection getConnection() throws SQLException {
+    public void getConnection() throws SQLException {
         if (connection == null) {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         }
-        return connection;
     }
 
     public void closeConnection() {
@@ -33,5 +33,17 @@ public class DbOperations {
         }
     }
 
+    public String createTable(String tableName) throws SQLException {
+        getConnection();
+        Statement statement = connection.createStatement();
+        boolean isOpSucc = statement.execute("CREATE TABLE " + tableName + " (id INT primary key AUTO_INCREMENT,patientName varchar(20),allocatedRoomNo INT,allocatedDoctorName VARCHAR(20),dateOfAdmit VARCHAR(20) ); ");
+        String str = tableName + " is ";
+        if (isOpSucc) {
+            str = str + "created Successfully";
+        } else {
+            str = str + "not created Successfully";
+        }
+        return str;
+    }
 }
 
