@@ -40,6 +40,5 @@ public class PatientService {
     public String dischargePatient(int id) throws SQLException {
         return dbOperations.dischargePatient(id);
     }
-
 }
 

@@ -44,6 +44,5 @@ public class PatientController {
     public String dischargePatient(@PathVariable int id) throws SQLException {
         return patientService.dischargePatient(id);
     }
-
 }
 
