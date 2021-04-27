@@ -37,15 +37,9 @@ public class DbOperations {
     public String createTable(String tableName) throws SQLException {
         getConnection();
         this.tableName = tableName;
-        Statement statement = connection.createStatement();
-        boolean isOpSucc = statement.execute("CREATE TABLE " + tableName + " (id INT primary key AUTO_INCREMENT,patientName varchar(20),allocatedRoomNo INT,allocatedDoctorName VARCHAR(20),dateOfAdmit VARCHAR(20) ); ");
-        String str = tableName + " is ";
-        if (isOpSucc) {
-            str = str + "created Successfully";
-        } else {
-            str = str + "not created Successfully";
-        }
-        return str;
+        PreparedStatement preparedStatement = connection.prepareStatement("CREATE TABLE " + tableName + " (id INT primary key AUTO_INCREMENT,patientName varchar(20),allocatedRoomNo INT,allocatedDoctorName VARCHAR(20),dateOfAdmit VARCHAR(20) ); ");
+        preparedStatement.executeUpdate();
+        return tableName + " is created Successfully";
     }
 
     public String insertPatientInfo(Patient patient) throws SQLException {
@@ -106,8 +100,8 @@ public class DbOperations {
     public String dischargePatient(int id) throws SQLException {
         getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM " + this.tableName + " WHERE id = " + id);
-        boolean isOpSucc = preparedStatement.execute();
-        if (isOpSucc) {
+        int isOpSucc = preparedStatement.executeUpdate();
+        if (isOpSucc == 1) {
             return "Deleted";
         } else {
             return "Not deleted";
