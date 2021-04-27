@@ -72,12 +72,12 @@ public class DbOperations {
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM " + tableName);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            int id = resultSet.getInt(1);
+            //int id = resultSet.getInt(1);
             String patientName = resultSet.getString(2);
             int allocatedRoomNo = resultSet.getInt(3);
             String allocatedDoctorName = resultSet.getString(4);
             String dateOfAdmit = resultSet.getString(5);
-            patients.add(new Patient(id, patientName, allocatedRoomNo, allocatedDoctorName, dateOfAdmit));
+            patients.add(new Patient(patientName, allocatedRoomNo, allocatedDoctorName, dateOfAdmit));
         }
         closeConnection();
         return patients;
@@ -88,12 +88,11 @@ public class DbOperations {
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM " + this.tableName + " WHERE id = " + id);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
-            int idr = resultSet.getInt(1);
             String patientName = resultSet.getString(2);
             int allocatedRoomNo = resultSet.getInt(3);
             String allocatedDoctorName = resultSet.getString(4);
             String dateOfAdmit = resultSet.getString(5);
-            Patient patient = new Patient(idr, patientName, allocatedRoomNo, allocatedDoctorName, dateOfAdmit);
+            Patient patient = new Patient(patientName, allocatedRoomNo, allocatedDoctorName, dateOfAdmit);
             closeConnection();
             return patient;
         } else {
@@ -103,5 +102,17 @@ public class DbOperations {
         }
 
     }
+
+    public String dischargePatient(int id) throws SQLException {
+        getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM " + this.tableName + " WHERE id = " + id);
+        boolean isOpSucc = preparedStatement.execute();
+        if (isOpSucc) {
+            return "Deleted";
+        } else {
+            return "Not deleted";
+        }
+    }
+
 }
 

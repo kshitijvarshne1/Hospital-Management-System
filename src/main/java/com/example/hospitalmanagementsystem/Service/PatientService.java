@@ -36,5 +36,10 @@ public class PatientService {
     public Patient searchById(int id) throws SQLException {
         return dbOperations.searchById(id);
     }
+
+    public String dischargePatient(int id) throws SQLException {
+        return dbOperations.dischargePatient(id);
+    }
+
 }
 

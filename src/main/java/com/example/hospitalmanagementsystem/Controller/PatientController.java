@@ -35,9 +35,15 @@ public class PatientController {
         return patientService.getAllPatientInfo();
     }
 
-    @GetMapping("/searchById{id}")
+    @GetMapping("/searchById/{id}")
     public Patient searchById(@PathVariable int id) throws SQLException {
         return patientService.searchById(id);
     }
+
+    @PostMapping("/dischargePatient/{id}")
+    public String dischargePatient(@PathVariable int id) throws SQLException {
+        return patientService.dischargePatient(id);
+    }
+
 }
 
